@@ -218,6 +218,72 @@ namespace AngelBroking
             }
             return res;
         }
+        
+        /// <summary>
+        /// if you use https://smartapi.angelbroking.com/publisher-login?api_key=xxx
+        /// page rediret your url with feedToken, jwtToken, refreshToken to use this use following fun
+        /// 
+        ///protected void Page_Load(object sender, EventArgs e)
+        ///{
+        ///    string auth_token = Request.QueryString["auth_token"];
+        ///
+        ///    if (!string.IsNullOrEmpty(auth_token))
+        ///    {
+        ///        string refresh_token = Request.QueryString["refresh_token"];
+        ///        string feed_token = Request.QueryString["feed_token"];
+        ///
+        ///        SmartApi connect = new SmartApi(api_key, auth_token, refresh_token);
+        ///
+        ///        AngelToken TokenData = new AngelToken();
+        ///        TokenData.feedToken = feed_token;
+        ///        TokenData.jwtToken = auth_token;
+        ///        TokenData.refreshToken = refresh_token;
+        ///
+        ///        var OP = connect.GenerateSession(TokenData);
+        ///
+        ///        var o1 = connect.GetProfile();
+        ///        GetProfileResponse gp = o1.GetProfileResponse;
+        ///    }
+        ///}
+        ///
+        /// </summary>
+        /// <param name="TokenData"></param>
+        /// <returns></returns>
+        public OutputBaseClass GenerateSession(AngelToken TokenData)
+        {
+            OutputBaseClass res = new OutputBaseClass();
+            res.status = true;
+            res.http_code = "200";
+            try
+            {
+
+
+
+                if (TokenData != null)
+                {
+                    res.TokenResponse = TokenData;
+                    res.status = true;
+                    res.http_error = "SUCCESS";
+                    //res.http_code = "";
+                    this.Token = TokenData;
+                }
+                else
+                {
+                    res.status = false;
+                    res.http_code = "404";
+                    res.http_error = "Error:";
+                }
+            }
+            catch (Exception ex)
+            {
+                res.status = false;
+                res.http_code = "404";
+                res.http_error = ex.Message;
+            }
+            return res;
+        }
+        
+        
         public OutputBaseClass GenerateToken()
         {
             OutputBaseClass res = new OutputBaseClass();
